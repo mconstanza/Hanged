@@ -4,6 +4,7 @@ function Word(word) {
 
 	this.word = word;
 	this.letters = [];
+	this.workingPuzzle = '';
 
 	for (letter = 0; letter < word.length; letter++){
 		var char = new Letter(word[letter]);
@@ -25,8 +26,6 @@ function Word(word) {
 	// updates letter display to change '_' to the letter
 	this.updateLetters = function(guess) {
 
-		console.log('updating letters')
-
 		for (i=0; i < this.letters.length; i++){
 			var letter = this.letters[i];
 
@@ -35,6 +34,16 @@ function Word(word) {
 
 			}
 		}
+	}
+
+	this.wordStatus = function() {
+		this.workingPuzzle = '';
+		
+		for (i=0; i < this.letters.length; i++){
+			
+			this.workingPuzzle += this.letters[i].display
+		}
+		return this.workingPuzzle;
 	}
 
 	this.displayWord = function(){
@@ -47,7 +56,9 @@ function Word(word) {
 			word += ' ';
 
 		}
+		console.log("\n======================================\n")
 		console.log('\n' + word + '\n')
+		console.log("\n======================================\n")
 
 	}
 }

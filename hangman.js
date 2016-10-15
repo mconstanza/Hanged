@@ -5,8 +5,9 @@ var Game = require('./game.js');
 
 
 // Set Global Variables
-var gameStarted = false;
-var exit = false;
+var guessesLeft = 5;
+var playerGuesses = [];
+
 
 // Global Functions ///////////////////////////////////////////////////////
 var validateGuess = function(guess){
@@ -63,22 +64,23 @@ var validateGuess = function(guess){
 }
 
 // Inquirer Prompts ///////////////////////////////////////////////////////
-var guessTypePrompt = 
+var mainPrompt = 
 	{
 		type: "list",
 		name: "choice",
-		message: "Would you like to guess a letter or the whole word?",
-		choices: ["Guess a letter.", "Guess the word.", "New Puzzle.", "Exit."]
+		message: "What do you want to do?",
+		choices: ["Guess a letter.", "Guess the word.", "Give up - New Puzzle.", "Exit."]
 	}
 
 var guessLetterPrompt = {name: "guess", message: "What letter would you like to guess?"}
 
 var guessWordPrompt = {name: "guess", message: "So you got this, huh? What's the word?"}
 
+var newGamePrompt = {type: "confirm", name: "choice", message: "New Game?"}
 // Prompt Functions ///////////////////////////////////////////////////////
-function guessType() {
+function main() {
 
-	inquirer.prompt(guessTypePrompt).then(function(answers){
+	inquirer.prompt(mainPrompt).then(function(answers){
 
 		if (answers.choice == "Guess a letter.") {
 
@@ -88,10 +90,9 @@ function guessType() {
 
 			guessWord();
 
-		}else if (answers.choice == "New Puzzle."){
+		}else if (answers.choice == "Give up - New Puzzle."){
 
-			puzzle = Game.newPuzzle();
-			guessType();
+			newGame();
 
 		}else if (answers.choice == "Exit."){
 			process.exit();
@@ -103,9 +104,6 @@ function guessLetter() {
 
 	inquirer.prompt(guessLetterPrompt).then(function(answers){
 
-		console.log("in guess letter callback")
-
-		console.log('answers: ' + answers.guess)
 
 		// var guess = validateGuess(answers.guess)
 
@@ -118,19 +116,31 @@ function guessLetter() {
 			// logic when a correct guess is submitted
 			if(puzzle.checkGuess(answers.guess)){
 				puzzle.updateLetters(answers.guess)
-				puzzle.displayWord();
-				guessType();	
+				if(winCheck()){
+					console.log("You Win!")
+					newGame();
+				}else{
+					puzzle.displayWord();
+					main();		
+				}
+				
 
 			// logic when an incorrect guess is submitted
 			}else {
-				puzzle.displayWord();
-				guessType();
+				// if player is out of guesses
+				if(loseCheck()){
+					console.log('You lose!');
+				// if player has guesses remaining
+				}else{
+					puzzle.displayWord();
+					main();
+				}
 			}
 
 		// }else {
 
 		// 	console.log(guess.error)
-		// 	guessType();
+		// 	main();
 		// }
 	})
 }
@@ -147,6 +157,54 @@ function guessWord() {
 
 }
 
+function winCheck() {
+
+	console.log('checking for win')
+
+	var workingPuzzle = puzzle.wordStatus();
+
+	console.log(workingPuzzle)
+
+	if (workingPuzzle == puzzle.word){
+		// player wins
+		return true
+	}
+}
+
+function loseCheck() {
+
+	if (guessesLeft <= 0) {
+
+		return true
+
+	}
+
+}
+
+function newGame() {
+
+	console.log('making new game')
+
+	inquirer.prompt(newGamePrompt).then(function(answers){
+
+		console.log(answers)
+
+		if(answers.choice == true) {
+
+			guessesLeft = 5;
+			playerGuesses = [];
+			puzzle = Game.newPuzzle();
+
+			puzzle.displayWord();
+			main();
+
+		}else{
+			process.exit;
+		}
+
+	})
+
+}
 // Load Puzzle
 var puzzle = Game.newPuzzle();
 
@@ -159,15 +217,8 @@ puzzle.displayWord();
 
 // prompt player for input
 
-guessType();
+main();
 
-// check player input
-
-
-// update display
-
-
-// check if game over
 
 
 
