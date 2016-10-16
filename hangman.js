@@ -7,6 +7,7 @@ var Game = require('./game.js');
 // Set Global Variables
 var guessesLeft = 5;
 var playerGuesses = [];
+var playerMisses = [];
 
 
 // Global Functions ///////////////////////////////////////////////////////
@@ -92,6 +93,7 @@ function main() {
 
 		}else if (answers.choice == "Give up - New Puzzle."){
 
+			displaySolution();
 			newGame();
 
 		}else if (answers.choice == "Exit."){
@@ -115,24 +117,35 @@ function guessLetter() {
 
 			// logic when a correct guess is submitted
 			if(puzzle.checkGuess(answers.guess)){
-				puzzle.updateLetters(answers.guess)
+				playerGuesses.push(answers.guess);
+				puzzle.updateLetters(answers.guess);
+
 				if(winCheck()){
-					console.log("You Win!")
+					console.log("\nYou Win!\n")
 					newGame();
 				}else{
+					
 					puzzle.displayWord();
+					displayGuessedLetters();
 					main();		
 				}
 				
 
 			// logic when an incorrect guess is submitted
 			}else {
+				guessesLeft -= 1;
+				playerMisses.push(answers.guess);
+				playerGuesses.push(answers.guess);
 				// if player is out of guesses
+				
 				if(loseCheck()){
-					console.log('You lose!');
+					console.log('\nYou lose!\n');
+					displaySolution();
+					newGame();
 				// if player has guesses remaining
 				}else{
 					puzzle.displayWord();
+					displayGuessedLetters();
 					main();
 				}
 			}
@@ -151,19 +164,66 @@ function guessWord() {
 
 		var word = answers.word;
 
-		winCheck(word)
+		if(winCheck(word)){
+
+			// player wins the game
+			console.log('Aw snap! You Win!')
+			newGame();
+
+		}else {
+
+			// player loses the game
+			console.log("SMH. That's what you get for thinking you're all that")
+			newGame();
+
+		}
 
 	})
 
 }
 
-function winCheck() {
+// Display Functions //////////////////////////////////////////////////////
+function displaySolution() {
+
+	console.log("\nThe word was...\n")
+	console.log("\n======================================\n")
+	console.log(puzzle.word)
+	console.log("\n======================================\n")
+
+}
+
+function displayGuessedLetters(){
+
+	var guessedLetters = ''
+
+	for (i=0; i < playerMisses.length ; i++){
+
+		guessedLetters += playerMisses[i] + ' ';
+
+	}
+
+
+	console.log('\nGuessed Letters: ' + guessedLetters + '\n');
+	console.log('Lives Remaining: ' + guessesLeft + '\n')
+
+}
+
+// Game Functions /////////////////////////////////////////////////////////
+function winCheck(word) {
 
 	console.log('checking for win')
 
-	var workingPuzzle = puzzle.wordStatus();
+	// if a word is passed, check the whole word
+	if (word) {
 
-	console.log(workingPuzzle)
+		var workingPuzzle = word;
+
+	// if not, check only the currently guessed letters
+	}else{
+
+		var workingPuzzle = puzzle.wordStatus();
+
+	}
 
 	if (workingPuzzle == puzzle.word){
 		// player wins
@@ -176,23 +236,18 @@ function loseCheck() {
 	if (guessesLeft <= 0) {
 
 		return true
-
 	}
-
 }
 
 function newGame() {
 
-	console.log('making new game')
-
 	inquirer.prompt(newGamePrompt).then(function(answers){
-
-		console.log(answers)
 
 		if(answers.choice == true) {
 
 			guessesLeft = 5;
 			playerGuesses = [];
+			playerMisses = [];
 			puzzle = Game.newPuzzle();
 
 			puzzle.displayWord();
@@ -201,17 +256,16 @@ function newGame() {
 		}else{
 			process.exit;
 		}
-
 	})
-
 }
+
 // Load Puzzle
 var puzzle = Game.newPuzzle();
 
 // Intro screen
-console.log("Welcome to Hangman!");
+console.log("\nWelcome to Hangman!");
 
-// Start Game
+// Display the puzzle
 
 puzzle.displayWord();
 
