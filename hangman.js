@@ -124,7 +124,8 @@ function guessLetter() {
 					console.log("\nYou Win!\n")
 					newGame();
 				}else{
-					
+
+					displayHangman();
 					puzzle.displayWord();
 					displayGuessedLetters();
 					main();		
@@ -140,10 +141,12 @@ function guessLetter() {
 				
 				if(loseCheck()){
 					console.log('\nYou lose!\n');
+					displayHangman();
 					displaySolution();
 					newGame();
 				// if player has guesses remaining
 				}else{
+					displayHangman();
 					puzzle.displayWord();
 					displayGuessedLetters();
 					main();
@@ -174,6 +177,7 @@ function guessWord() {
 
 			// player loses the game
 			console.log("SMH. That's what you get for thinking you're all that")
+			displayHangman();
 			newGame();
 
 		}
@@ -206,6 +210,91 @@ function displayGuessedLetters(){
 	console.log('\nGuessed Letters: ' + guessedLetters + '\n');
 	console.log('Lives Remaining: ' + guessesLeft + '\n')
 
+}
+
+function displayHangman(){
+
+	switch(guessesLeft) {
+
+		case 5:
+			console.log('              ')
+			console.log(' -----------   ')
+			console.log(' |         |  ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log('--------------')
+			break;
+
+		case 4:
+			console.log('              ')
+			console.log(' -----------   ')
+			console.log(' |         |  ')
+			console.log(' |         @  ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log('--------------')
+			break;
+
+		case 3:
+			console.log('              ')
+			console.log(' -----------   ')
+			console.log(' |         |  ')
+			console.log(' |         @  ')
+			console.log(' |         |  ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log('--------------')
+			break;
+
+		case 2:
+			console.log('              ')
+			console.log(' -----------   ')
+			console.log(' |         |  ')
+			console.log(' |         @  ')
+			console.log(' |        /|\\ ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log('--------------')
+			break;
+
+		case 1:
+			console.log('              ')
+			console.log(' -----------   ')
+			console.log(' |         |  ')
+			console.log(' |         @  ')
+			console.log(' |        /|\\ ')
+			console.log(' |        / \\ ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log('--------------')
+			break;
+
+		case 0:
+			console.log('              ')
+			console.log(' -----------   ')
+			console.log(' |         |  ')
+			console.log(' |         |  ')
+			console.log(' |         @  ')
+			console.log(' |        /|\\ ')
+			console.log(' |        / \\ ')
+			console.log(' |             ')
+			console.log(' |             ')
+			console.log('--------------')
+			break;
+
+	}	
 }
 
 // Game Functions /////////////////////////////////////////////////////////
@@ -250,6 +339,7 @@ function newGame() {
 			playerMisses = [];
 			puzzle = Game.newPuzzle();
 
+			displayHangman();
 			puzzle.displayWord();
 			main();
 
@@ -266,7 +356,7 @@ var puzzle = Game.newPuzzle();
 console.log("\nWelcome to Hangman!");
 
 // Display the puzzle
-
+displayHangman();
 puzzle.displayWord();
 
 // prompt player for input
