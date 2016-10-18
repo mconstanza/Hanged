@@ -14,12 +14,12 @@ var playerMisses = [];
 // Global Functions ///////////////////////////////////////////////////////
 var validateGuess = function(guess){
 
-	console.log('validating guess ' + guess)
+	// console.log('validating guess ' + guess)
 
 	var regex=/[^a-zA-Z]+$/;
 
 	if (guess == null) {
-		console.log('if null')
+		// console.log('if null')
 		return {
 			"valid":false, 
 			"error":"You must input a letter."
@@ -27,28 +27,28 @@ var validateGuess = function(guess){
 		
 
 	}else if (guess.match(regex)) {
-		console.log('if not a letter')
+		// console.log('if not a letter')
 		return {
 			"valid":false,
 			"error":"Guess must be a letter."
 		}
 		
 	} else if (guess.length > 1) {
-		console.log('if more than one letter')
+		// console.log('if more than one letter')
 		return {
 			"valid": false,
 			"error": "You can only guess one letter at a time."
 		}
 
 	} else if (playerGuesses.indexOf(guess) > -1) {
-		console.log('if already in guesses')
+		// console.log('if already in guesses')
 		return {
 			"valid": false,
 			"error": "You already guessed that letter."
 		}
 
 	}else if (guess.length < 1) {
-		console.log('if no input')
+		// console.log('if no input')
 		return {
 			"valid": false,
 			"error": "You must input a letter."
@@ -56,7 +56,7 @@ var validateGuess = function(guess){
 		
 	}else{
 
-		console.log('valid guess!')
+		// console.log('valid guess!')
 		return {
 			"valid": true,
 			"error": "none"
@@ -108,13 +108,13 @@ function guessLetter() {
 	inquirer.prompt(guessLetterPrompt).then(function(answers){
 
 
-		// var guess = validateGuess(answers.guess)
+		var guess = validateGuess(answers.guess)
 
 		// console.log(guess)
 
-		// if (guess.valid) {
+		if (guess.valid) {
 
-		// 	console.log('Guess Valid!')
+			// console.log('Guess Valid!')
 
 			// logic when a correct guess is submitted
 			if(puzzle.checkGuess(answers.guess)){
@@ -154,12 +154,15 @@ function guessLetter() {
 					main();
 				}
 			}
+		// guess is invalid
+		}else {
 
-		// }else {
-
-		// 	console.log(guess.error)
-		// 	main();
-		// }
+			console.log('\n' + guess.error + '\n')
+			displayHangman();
+			puzzle.displayWord();
+			displayGuessedLetters();
+			main();
+		}
 	})
 }
 
