@@ -121,6 +121,7 @@ function guessLetter() {
 				puzzle.updateLetters(answers.guess);
 
 				if(winCheck()){
+					puzzle.displayWord();
 					console.log("\nYou Win!\n")
 					newGame();
 				}else{
@@ -299,8 +300,6 @@ function displayHangman(){
 
 // Game Functions /////////////////////////////////////////////////////////
 function winCheck(word) {
-
-	console.log('checking for win')
 
 	// if a word is passed, check the whole word
 	if (word) {
