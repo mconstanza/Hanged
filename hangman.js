@@ -2,6 +2,7 @@ var Letter = require('./letter.js');
 var Word = require('./word.js');
 var inquirer = require('inquirer');
 var Game = require('./game.js');
+var figlet = require('figlet');
 
 
 // Set Global Variables
@@ -188,6 +189,15 @@ function guessWord() {
 }
 
 // Display Functions //////////////////////////////////////////////////////
+function displayTitle() {
+	console.log(figlet.textSync('Hanged!', {
+		font: 'Star Wars',
+		horizontalLayout: 'default',
+		verticalLayout: 'default'
+	}));
+}
+
+
 function displaySolution() {
 
 	console.log("\nThe word was...\n")
@@ -338,6 +348,7 @@ function newGame() {
 			playerMisses = [];
 			puzzle = Game.newPuzzle();
 
+			displayTitle();
 			displayHangman();
 			puzzle.displayWord();
 			main();
@@ -352,9 +363,11 @@ function newGame() {
 var puzzle = Game.newPuzzle();
 
 // Intro screen
-console.log("\nWelcome to Hangman!");
+// console.log("\nWelcome to Hangman!");
+displayTitle();
 
 // Display the puzzle
+
 displayHangman();
 puzzle.displayWord();
 

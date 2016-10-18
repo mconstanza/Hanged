@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/nessfalco/Week11-Hangman#readme",
   "dependencies": {
+    "figlet": "^1.2.0",
     "inquirer": "^1.2.2"
   }
 }
