@@ -123,7 +123,13 @@ function guessLetter() {
 
 				if(winCheck()){
 					puzzle.displayWord();
-					console.log("\nYou Win!\n")
+					// console.log("\nYou Win!\n")
+					console.log(figlet.textSync('You Win!', {
+						font: 'Star Wars',
+						horizontalLayout: 'default',
+						verticalLayout: 'default'
+					}));
+					console.log('\n');
 					newGame();
 				}else{
 
@@ -142,7 +148,14 @@ function guessLetter() {
 				// if player is out of guesses
 				
 				if(loseCheck()){
-					console.log('\nYou lose!\n');
+					// console.log('\nYou lose!\n');
+					console.log(figlet.textSync('You Lose!', {
+						font: 'Star Wars',
+						horizontalLayout: 'default',
+						verticalLayout: 'default'
+					}));
+					console.log('\n');
+					
 					displayHangman();
 					displaySolution();
 					newGame();
