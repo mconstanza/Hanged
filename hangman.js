@@ -71,12 +71,10 @@ var mainPrompt =
 		type: "list",
 		name: "choice",
 		message: "What do you want to do?",
-		choices: ["Guess a letter.", "Guess the word.", "Give up - New Puzzle.", "Exit."]
+		choices: ["Guess a letter.", "Give up - New Puzzle.", "Exit."]
 	}
 
 var guessLetterPrompt = {name: "guess", message: "What letter would you like to guess?"}
-
-var guessWordPrompt = {name: "guess", message: "So you got this, huh? What's the word?"}
 
 var newGamePrompt = {type: "confirm", name: "choice", message: "New Game?"}
 // Prompt Functions ///////////////////////////////////////////////////////
@@ -87,10 +85,6 @@ function main() {
 		if (answers.choice == "Guess a letter.") {
 
 			guessLetter();
-
-		}else if (answers.choice == "Guess the word."){
-
-			guessWord();
 
 		}else if (answers.choice == "Give up - New Puzzle."){
 
@@ -179,30 +173,6 @@ function guessLetter() {
 	})
 }
 
-function guessWord() {
-
-	inquirer.prompt(guessWordPrompt).then(function(answers){
-
-		var word = answers.word;
-
-		if(winCheck(word)){
-
-			// player wins the game
-			console.log('Aw snap! You Win!')
-			newGame();
-
-		}else {
-
-			// player loses the game
-			console.log("SMH. That's what you get for thinking you're all that")
-			displayHangman();
-			newGame();
-
-		}
-
-	})
-
-}
 
 // Display Functions //////////////////////////////////////////////////////
 function displayTitle() {

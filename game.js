@@ -8,7 +8,7 @@ var newPuzzle = function(){
 	var puzzles = array.split('\n');
 
 	var index = Math.floor(Math.random() * puzzles.length);
-	var word = puzzles[index];
+	var word = puzzles[index].trim();
 
 	var puzzle = new Word(word);
 
